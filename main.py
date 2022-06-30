@@ -1,3 +1,4 @@
+from secrets import choice
 import pygame
 from sys import exit
 from Obstacle import Obstacle
@@ -21,7 +22,7 @@ while True:
             pygame.quit()
             exit()
         if event.type==obstacle_timer:
-            obstacles.add(Obstacle('rock'))
+            obstacles.add(Obstacle(choice(['enemy_ship_type1','enemy_ship_type1','enemy_ship_type2','rock'])))
 
     screen.blit(space.image, (-80, -30))
     space.space_animation()
