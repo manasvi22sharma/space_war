@@ -19,7 +19,7 @@ def collisons_between_obstacles(obstacles):
         
 def fire_bullet(player,player_group):
     pos=player.rect.midtop
-    player_group.add(Bullet(pos[0],pos[1]))
+    player_group.add(Bullet(pos[0]+15,pos[1]))
 
 def collsion_player(obstacles,player_group):
     list_collison=pygame.sprite.groupcollide(player_group,obstacles,True,False)
@@ -74,7 +74,9 @@ game_active=False
 score=0
 #timmer
 obstacle_timer = pygame.USEREVENT + 1
-pygame.time.set_timer(obstacle_timer,1000)
+enemy_time=2000
+ammo_time=20000
+pygame.time.set_timer(obstacle_timer,enemy_time)
 ammo_timer =pygame.USEREVENT+2
 pygame.time.set_timer(ammo_timer,20000)
 while True:
@@ -91,6 +93,12 @@ while True:
                         fire_bullet(player,player_group)
                         bullets_left -=1
             if event.type==ammo_timer:
+                enemy_time -=200
+                if enemy_time<=100:
+                    enemy_time=100
+                    ammo_time=3000
+                pygame.time.set_timer(ammo_timer,ammo_time) 
+                pygame.time.set_timer(obstacle_timer,enemy_time)   
                 ammo_group.add(Ammo())
         else:
             if event.type==pygame.KEYDOWN and event.key==pygame.K_SPACE:
@@ -98,6 +106,10 @@ while True:
                 start_time = int(pygame.time.get_ticks() / 1000)
                 player_group.add(player)
                 bullets_left=25
+                enemy_time=2000
+                ammo_time=20000
+                pygame.time.set_timer(ammo_timer,ammo_time) 
+                pygame.time.set_timer(obstacle_timer,enemy_time) 
     screen.blit(space.image, (-80, -30))
     if game_active:
         space.space_animation()
@@ -112,6 +124,7 @@ while True:
         bullets_left=ammo_collected(ammo_group,player_group,bullets_left)
         display_bullets_left(bullets_left)
         score=display_score(start_time)
+
     else:
         game_font=pygame.font.SysFont('comicsans',65,True)
         score_font=pygame.font.SysFont('Corbel',35,True)

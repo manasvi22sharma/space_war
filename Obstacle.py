@@ -13,7 +13,7 @@ class Obstacle(pygame.sprite.Sprite):
             self.animation_index=0
             self.image=self.frames[self.animation_index]
             self.image=pygame.transform.rotozoom(self.image,0,0.2)
-            self.rect=self.image.get_rect(midbottom = (randint(20,625),-5))
+            self.rect=self.image.get_rect(midbottom = (randint(20,625),-2))
             self.rect = self.rect.inflate(-20, -20)
         if type == 'enemy_ship_type1':
             self.type='enemy_ship_type1'
@@ -23,7 +23,7 @@ class Obstacle(pygame.sprite.Sprite):
             self.animation_index=0
             self.image=self.frames[self.animation_index]
             self.image=pygame.transform.rotozoom(self.image,0,0.2)
-            self.rect=self.image.get_rect(midbottom = (randint(0,499),-5))
+            self.rect=self.image.get_rect(midbottom = (randint(0,499),-2))
             self.rect = self.rect.inflate(-50, -50)
         if type == 'enemy_ship_type2':
             self.type='enemy_ship_type2'
@@ -33,7 +33,7 @@ class Obstacle(pygame.sprite.Sprite):
             self.animation_index=0
             self.image=self.frames[self.animation_index]
             self.image=pygame.transform.rotozoom(self.image,0,0.2)
-            self.rect=self.image.get_rect(midbottom = (randint(0,599),-5))
+            self.rect=self.image.get_rect(midbottom = (randint(0,599),-2))
             self.rect = self.rect.inflate(-20, -20)
         self.blast=False
         self.blast_count=0
