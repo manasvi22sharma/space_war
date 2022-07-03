@@ -24,7 +24,7 @@ class Obstacle(pygame.sprite.Sprite):
             self.image=self.frames[self.animation_index]
             self.image=pygame.transform.rotozoom(self.image,0,0.2)
             self.rect=self.image.get_rect(midbottom = (randint(0,499),-5))
-            self.rect = self.rect.inflate(-60, -50)
+            self.rect = self.rect.inflate(-50, -50)
         if type == 'enemy_ship_type2':
             self.type='enemy_ship_type2'
             self.frame_1=pygame.image.load('images\enemy_ship2.png').convert_alpha()

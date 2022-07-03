@@ -2,6 +2,8 @@ from secrets import choice
 from tkinter import CENTER
 import pygame
 from sys import exit
+
+from scipy.misc import central_diff_weights
 from Ammo import Ammo
 from Bullet import Bullet
 from Obstacle import Obstacle
@@ -26,6 +28,7 @@ def collsion_player(obstacles,player_group):
         for sprite in list_collison[i]:
             if i.type=='Player':
                 pygame.sprite.collide_rect_ratio(0.5)(i,sprite)
+                i.kill()
                 return False
             else:sprite.blast=True
     #print(list_collison)
@@ -59,7 +62,7 @@ clock=pygame.time.Clock()
 screen=pygame.display.set_mode((500,600))
 player=Player()
 player_group=pygame.sprite.Group()
-player_group.add(player)
+#player_group.add(player)
 space=Space()
 obstacles=pygame.sprite.Group()
 obstacles.add(Obstacle('rock'))
@@ -67,7 +70,8 @@ ammo_group=pygame.sprite.Group()
 test_font = pygame.font.Font('font/Pixeltype.ttf', 30)
 bullets_left=25
 start_time=0
-game_active=True
+game_active=False
+score=0
 #timmer
 obstacle_timer = pygame.USEREVENT + 1
 pygame.time.set_timer(obstacle_timer,1000)
@@ -88,8 +92,14 @@ while True:
                         bullets_left -=1
             if event.type==ammo_timer:
                 ammo_group.add(Ammo())
+        else:
+            if event.type==pygame.KEYDOWN and event.key==pygame.K_SPACE:
+                game_active=True
+                start_time = int(pygame.time.get_ticks() / 1000)
+                player_group.add(player)
+                bullets_left=25
+    screen.blit(space.image, (-80, -30))
     if game_active:
-        screen.blit(space.image, (-80, -30))
         space.space_animation()
         player_group.draw(screen)
         player_group.update()
@@ -101,7 +111,23 @@ while True:
         ammo_group.update()
         bullets_left=ammo_collected(ammo_group,player_group,bullets_left)
         display_bullets_left(bullets_left)
-        display_score(start_time)
+        score=display_score(start_time)
+    else:
+        game_font=pygame.font.SysFont('comicsans',65,True)
+        score_font=pygame.font.SysFont('Corbel',35,True)
+        game_name=game_font.render(f'SPACE WARS',False,(93,227,9))
+        score_message=score_font.render(f'Score : {score}',False,(10,98,245))
+        game_name_rect = game_name.get_rect(center = (250,150))
+        score_rect = score_message.get_rect(center = (250,250))
+        start_message=test_font.render('Press Space to start!!',True,(245,7,43))
+        start_message_rect=start_message.get_rect(center=(250,400))
+        screen.blit(score_message,score_rect)
+        screen.blit(game_name,game_name_rect)
+        screen.blit(start_message,start_message_rect)
+        obstacles.empty()
+        player_group.empty()
+
+
 
     pygame.display.update()
     clock.tick(60)
