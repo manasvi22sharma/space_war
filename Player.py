@@ -4,6 +4,7 @@ from sys import exit
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
+        self.type='Player'
         self.spaceship_animation_1=pygame.image.load('images\player_ship.png').convert_alpha()
         self.spaceship_animation_2=pygame.image.load('images\player_ship2.png').convert_alpha()
         self.spaceship_animation_3=pygame.image.load('images\player_ship3.png').convert_alpha()
@@ -12,6 +13,7 @@ class Player(pygame.sprite.Sprite):
         self.image=self.spaceship_list[int(self.index)]
         self.image=pygame.transform.rotozoom(self.image,0,0.2)
         self.rect=self.image.get_rect(midbottom=(250,598))
+        self.rect = self.rect.inflate(-40, -40)
 
     def spaceship_animation(self):
         self.index+=0.05
@@ -24,6 +26,6 @@ class Player(pygame.sprite.Sprite):
             self.rect.right-=2
         if keys[pygame.K_RIGHT] and self.rect.right <= 500:
             self.rect.left+=2
-    def player_update(self):
+    def update(self):
         self.player_movement()
         self.spaceship_animation()
