@@ -22,11 +22,12 @@ def fire_bullet(player,player_group):
 def collsion_player(obstacles,player_group):
     list_collison=pygame.sprite.groupcollide(player_group,obstacles,True,False)
     for i in list_collison:
-        if i.type=='Player':
-            return False
         #    print('stop')
         for sprite in list_collison[i]:
-            sprite.blast=True
+            if i.type=='Player':
+                pygame.sprite.collide_rect_ratio(0.5)(i,sprite)
+                return False
+            else:sprite.blast=True
     #print(list_collison)
     return True
 def display_bullets_left(bullets_left):
@@ -44,11 +45,13 @@ def display_score(start_time):
 	screen.blit(score_surf,score_rect)
 	return current_time
 def ammo_collected(ammo_group,player_group,bullets_left):
-    list=pygame.sprite.groupcollide(ammo_group,player_group,True,False)
-    if len(list)>0:
-        return bullets_left+10
-    else:
-        return bullets_left
+    list=pygame.sprite.groupcollide(player_group,ammo_group,False,True)
+    for i in list:
+        if i.type=='Bullet':
+            i.kill()
+        bullets_left=bullets_left+10 
+    return bullets_left 
+
 
 
 pygame.init()
